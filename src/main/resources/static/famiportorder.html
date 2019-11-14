@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>全家订单处理</title>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="webjars/vue/2.6.10/vue.min.js"></script>
+    <script src="webjars/axios/0.19.0/dist/axios.min.js"></script>
+    <script src="webjars/spin.js/2.3.2/spin.min.js"></script>
+
+
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css"/>
+</head>
+<body>
+<div id="app">
+    <div class="container col-md-6 col-md-offset-3">
+
+
+        <h3>处理一条订单大概需要0.5秒，请耐心等待</h3>
+        <h3 style="color: red">务必按照格式要求上传</h3>
+        <form id="updateForm">
+            <label class="control-label" for="fileupload">上传文件</label>
+            <input class="file-loading" type="file" name="file" id="fileupload" accept=".xlsx"/>
+        </form>
+
+        <br>
+        <button class="btn btn-default btn-lg" id="fileupload_submit" onclick="update()">上传</button>
+        <br>
+    </div>
+
+    <div id="loadingDiv"></div>
+
+
+    <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="btnOpen()">
+                        &times;
+                    </button>
+                    <!--标题文本-->
+                    <h4 class="modal-title" id="myModalLabel">生成结果</h4>
+                </div>
+                <!--内容文本-->
+                <div id="responseMsg" class="modal-body">生成成功</div>
+                <div class="modal-footer">
+                    <!--关闭按钮-->
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="btnOpen()">关闭</button>
+                    <!--下载按钮-->
+                    <button id="downloadBtn" type="button" class="btn btn-primary" data-dismiss="modal"
+                            onclick="download()">下载
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+
+
+<script src="js/loading.js"></script>
+<script>
+
+    var downloadUrl = "";
+    function update() {
+        var formData = new FormData(document.querySelector("#updateForm"));
+        $("#fileupload_submit").attr("disabled",true);
+        $.ajax({
+            url:'/FamiportOrder/uploadExcel',
+            type: "POST",
+            data: formData,
+            processData: false,  // 不处理数据
+            contentType: false,   // 不设置内容类型
+            beforeSend: function () {
+                //异步请求时spinner出现
+
+                spinner.spin(target);
+            },
+            success:function (responseEntity) {
+
+                spinner.spin();
+
+                console.log(responseEntity);
+                if (responseEntity.state!==0){
+                    $("#downloadBtn").attr("disabled",true);
+                }
+                $("#responseMsg").text(responseEntity.msg);
+                downloadUrl = responseEntity.data;
+
+                $("#downloadModal").modal("show");
+
+            },
+            error:function () {
+                spinner.spin();
+            }
+        });
+    }
+    function download() {
+        console.log(downloadUrl);
+        window.open(downloadUrl,'_blank');
+        btnOpen();
+    }
+    function btnOpen() {
+        $("#fileupload_submit").attr("disabled",false);
+        $("#downloadBtn").attr("disabled",false);
+    }
+
+
+</script>
+
+
+
+</body>
+</html>
