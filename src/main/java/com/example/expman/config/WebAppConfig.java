@@ -19,11 +19,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebAppConfig{
 
     @Value("${excelPath}")
+
     private String excelPath;
 
 
     @Bean
     public WebMvcConfigurer webMvcConfigurer(){
+
         return new WebMvcConfigurer() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
