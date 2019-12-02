@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.webjars.npm:spin.js:2.3.2">
+    <CLASSES>
+      <root url="jar://D:/Maven/repository/org/webjars/npm/spin.js/2.3.2/spin.js-2.3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/Maven/repository/org/webjars/npm/spin.js/2.3.2/spin.js-2.3.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/Maven/repository/org/webjars/npm/spin.js/2.3.2/spin.js-2.3.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
