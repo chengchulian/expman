@@ -5,6 +5,7 @@ import com.example.expman.entity.heimao.HeiMaoAddressEntity;
 import com.example.expman.reptile.HeiMaoReptile;
 import com.example.expman.reptile.HeiMaoZipCodeReptile;
 import com.example.expman.utils.ExcelUtil;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -58,7 +59,7 @@ class ExpmanApplicationTests {
     }
 
 
-//    @Test
+    @Test
     void zipCodeContextLoad() throws IOException {
         List<HeiMaoAddressEntity> heiMaoAddressEntityList = new ArrayList<>();
         HeiMaoAddressEntity heiMaoAddressEntity = new HeiMaoAddressEntity("高雄市","仁武區","臺灣高雄市仁武區名光街60號5樓");

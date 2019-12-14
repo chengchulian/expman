@@ -5,6 +5,7 @@ import com.example.expman.entity.famiport.FamiportResponseExpInfo;
 import com.example.expman.entity.famiport.FamiportResponseResult;
 import com.example.expman.entity.kerry.KerryOrderUpEntity;
 import com.example.expman.reptile.KerryOrderReptile;
+import com.example.expman.utils.ExcelUtil;
 import com.example.expman.utils.ReptileUtil;
 import com.example.expman.utils.TwoClassCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +15,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,5 +154,33 @@ public class test {
                 System.out.println(i+":"+element.text());
             }
         }
+    }
+
+    @Test
+    void linkStateTest() throws FileNotFoundException {
+        List<KerryOrderUpEntity> kerryOrderUpEntityList = ExcelUtil.readExcel(new BufferedInputStream(new FileInputStream(new File("C:\\Users\\USER\\Desktop\\url.xlsx"))),KerryOrderUpEntity.class);
+        for (KerryOrderUpEntity kerryOrderUpEntity : kerryOrderUpEntityList) {
+            try {
+                Document document = Jsoup.parse(ReptileUtil.requesterGet("http://"+kerryOrderUpEntity.getExpNum(), false));
+                Element element = document.selectFirst("body > div > div.akmall-page > div.box.akmallbox-1 > div > div.akmall-content-title > h1");
+                System.out.println(kerryOrderUpEntity.getExpNum()+":"+ element.text());
+            } catch (IOException e) {
+                System.out.println(kerryOrderUpEntity.getExpNum()+":");
+            }
+        }
+
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("javascript");
+        try {
+            engine.eval("");
+        } catch (ScriptException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void linkTest2() throws IOException {
+        String s = ReptileUtil.requesterGet("https://www.trackingmore.com/qi-eleven-tracking/cn.html?number=86173322012", true);
+        System.out.println(s);
     }
 }
